@@ -4,7 +4,9 @@ UniMark is a mobile-first social bookmark manager for saving links from other ap
 
 ## Project status
  
-**Phase 1: Planning and design** is documented in [`docs/phase-1/`](docs/phase-1/). No application implementation has started. Work will proceed one roadmap phase at a time, with review between phases.
+**Phase 1: Planning and design** is documented in [`docs/phase-1/`](docs/phase-1/). Work proceeds one roadmap phase at a time, with review between phases.
+
+**Phase 2.1: Share integration feasibility prototype** is in [`mobile/`](mobile/) and its validation notes are in [`docs/phase-2.1/`](docs/phase-2.1/). The Android debug build succeeds, and a direct Android share-intent smoke check confirmed URL receipt, local saving, and persistence after restart. Testing through real source-app share sheets and testing iOS remain outstanding.
 
 ## Phase 1 deliverables
 
