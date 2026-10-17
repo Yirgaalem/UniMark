@@ -3,7 +3,7 @@
 **Base path:** `/api/v1`  
 **Format:** JSON over HTTPS  
 **Status:** Contract outline; no endpoints are implemented yet.
-
+ 
 ## API conventions
 
 - Use UUID resource IDs and ISO-8601 UTC timestamps.

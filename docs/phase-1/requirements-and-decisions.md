@@ -2,7 +2,7 @@
 
 **Status:** Review draft  
 **Scope:** Planning and design only. Phase 2 implementation has not started.
-
+ 
 ## 1. Product goal
 
 UniMark gives a user one private library for links they share from social apps and websites. The user can save a link quickly, organize it, personalize its title, and find or reopen it later. The original social content remains hosted by its source.

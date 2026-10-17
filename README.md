@@ -3,7 +3,7 @@
 UniMark is a mobile-first social bookmark manager for saving links from other apps, organizing them into folders, and finding them later.
 
 ## Project status
-
+ 
 **Phase 1: Planning and design** is documented in [`docs/phase-1/`](docs/phase-1/). No application implementation has started. Work will proceed one roadmap phase at a time, with review between phases.
 
 ## Phase 1 deliverables

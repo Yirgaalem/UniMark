@@ -1,7 +1,7 @@
 # UniMark Phase 1: Mobile screen and flow design
 
 **Design intent:** fast, calm, one-handed use. Saving a link should be the shortest path; optional details must not block saving.
-
+ 
 ## Navigation
 
 Use a bottom tab bar with **Home**, **Search**, **Folders**, and **Saved**. Put account/preferences under the profile/settings action in the Home header. Keep the number of top-level destinations small; folders and all-bookmark browsing remain distinct ways to browse the same records.
