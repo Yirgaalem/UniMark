@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-unimark}
+      POSTGRES_USER: ${POSTGRES_USER:-unimark}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-unimark-local-password}
+    volumes:
+      - unimark-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-unimark} -d ${POSTGRES_DB:-unimark}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build:
+      context: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-unimark}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-unimark}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-unimark-local-password}
+      UNIMARK_JWT_SECRET: ${UNIMARK_JWT_SECRET:-local-compose-only-change-before-deploy-2026}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      UNIMARK_SMTP_HOST: ${UNIMARK_SMTP_HOST:-}
+      UNIMARK_SMTP_PORT: ${UNIMARK_SMTP_PORT:-587}
+      UNIMARK_SMTP_USERNAME: ${UNIMARK_SMTP_USERNAME:-}
+      UNIMARK_SMTP_PASSWORD: ${UNIMARK_SMTP_PASSWORD:-}
+      UNIMARK_SMTP_FROM: ${UNIMARK_SMTP_FROM:-}
+      UNIMARK_SMTP_SECURITY: ${UNIMARK_SMTP_SECURITY:-starttls}
+      PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  unimark-postgres:

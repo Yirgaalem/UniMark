@@ -1,6 +1,6 @@
 # Phase 2.1: Share integration feasibility prototype
 
-**Status:** Android prototype builds and passes a direct share-intent smoke check; real source-app and iOS validation remain pending.  
+**Status:** Android prototype and several real source-app share paths were verified by the user; iOS validation and a complete source/device matrix remain pending.
 **App:** [`mobile/`](../../mobile/)
 
 ## What this prototype checks
@@ -25,7 +25,7 @@ It intentionally saves to on-device storage. Account identity and backend persis
 
 - Android debug build succeeded with React Native 0.88 on a Pixel_4_API_36 emulator running Android 16. The Gradle build installed the required Android SDK/build tools and NDK components.
 - No iOS build has been performed. This machine runs Windows; Xcode and CocoaPods are needed on macOS. The iOS Share Extension target, App Group, and URL scheme must be added/configured in Xcode for `react-native-share-menu`.
-- No real TikTok, Instagram, YouTube, Reddit, or browser share payloads have been tested yet.
+- Reddit and broader browser share behavior have not yet been tested. The test matrix below records the real Android results reported by the user.
 - The local prototype stores the original share text and extracted URL without authentication. It is for feasibility only, not production privacy/account storage.
 
 ## Test matrix
@@ -35,11 +35,11 @@ Fill the matrix after trying real source apps on devices. Include OS version and
 | Platform / OS | Source app | MIME type | Payload form | URL extracted | Saved locally | Reopened after restart | Limitations |
 |---|---|---|---|---|---|---|---|
 | Android 16 / Pixel_4_API_36 emulator | Direct `ACTION_SEND` smoke check | `text/plain` | YouTube URL in text payload | Yes | Yes | Yes | Synthetic intent; does not validate a real source app/share sheet |
-| Android / pending | TikTok | pending | pending | pending | pending | pending | pending |
-| Android / pending | Instagram | pending | pending | pending | pending | pending | pending |
-| Android / pending | YouTube | pending | pending | pending | pending | pending | pending |
+| Android 16 / Pixel_4_API_36 emulator | TikTok | Shared text shown | TikTok URL | Yes | Yes | Not individually rechecked | User confirmed received and saved; bookmark appeared in library |
+| Android 16 / Pixel_4_API_36 emulator | Instagram | Shared text shown | Instagram reel URL plus other text | Yes | Yes | Not individually rechecked | User confirmed received and saved; bookmark appeared in library |
+| Android 16 / Pixel_4_API_36 emulator | YouTube / browser share | Shared text shown | YouTube URL | Yes | Yes | Yes | User confirmed one saved bookmark remained after closing and reopening |
 | Android / pending | Reddit | pending | pending | pending | pending | pending | pending |
-| Android / pending | Browser | pending | pending | pending | pending | pending | pending |
+| Android 16 / Pixel_4_API_36 emulator | Google share | Shared text shown | `share.google` URL with Wikipedia source text | Yes | Yes | Not individually rechecked | URL host is a Google redirect domain; other browser pages remain untested |
 | iOS / pending | TikTok | pending | pending | pending | pending | pending | pending |
 | iOS / pending | Instagram | pending | pending | pending | pending | pending | pending |
 | iOS / pending | YouTube | pending | pending | pending | pending | pending | pending |
@@ -48,4 +48,4 @@ Fill the matrix after trying real source apps on devices. Include OS version and
 
 ## Exit criteria
 
-The prototype implementation and Android synthetic smoke check are ready for review. Phase 2.1's full validation exit criteria are not yet met: real source-app shares on Android and iOS checks on macOS remain outstanding. Directly launching the Android activity with an intent is only a smoke check, not proof for all source apps.
+The user reviewed the Android prototype and confirmed real shares from TikTok, Instagram, YouTube, and Google share links. Phase 2.1's full validation matrix is not complete: Reddit, broader browser cases, and iOS remain outstanding. Android share receipt, saving, and one persistence-after-restart case were demonstrated; iOS requires macOS/Xcode and remains a platform follow-up.

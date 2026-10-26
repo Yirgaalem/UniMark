@@ -1,0 +1,219 @@
+openapi: 3.1.0
+info:
+  title: UniMark API
+  version: 0.1.0
+  description: Account, private bookmark, and folder operations for Phase 2.2.
+servers:
+  - url: http://localhost:8080/api/v1
+security:
+  - bearerAuth: []
+paths:
+  /auth/register:
+    post:
+      security: []
+      summary: Create an account and email a verification code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Credentials'}
+      responses:
+        '201': {description: Email-code challenge returned; no session is issued yet}
+        '503': {description: Email delivery is not configured or temporarily unavailable}
+        '409': {description: Email already registered}
+  /auth/login:
+    post:
+      security: []
+      summary: Check credentials and email a sign-in code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/LoginCredentials'}
+      responses:
+        '200': {description: Email-code challenge returned; no session is issued yet}
+        '401': {description: Credentials are invalid}
+  /auth/google:
+    post:
+      security: []
+      summary: Verify a Google ID token and email a UniMark sign-in code
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [idToken]
+              properties: {idToken: {type: string}}
+      responses:
+        '200': {description: Email-code challenge returned; verified email is linked or a new account is created}
+        '401': {description: Google ID token is invalid or its email is unverified}
+        '400': {description: Google sign-in is not configured}
+  /auth/email-code/verify:
+    post:
+      security: []
+      summary: Verify a 6-digit email code and issue a session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, code]
+              properties:
+                token: {type: string}
+                code: {type: string, pattern: '^[0-9]{6}$'}
+      responses:
+        '200': {description: Token pair returned}
+        '401': {description: Code is invalid, expired, or already used}
+  /auth/email-code/resend:
+    post:
+      security: []
+      summary: Send a replacement code after a one-minute cooldown
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties: {token: {type: string}}
+      responses:
+        '200': {description: New email-code challenge returned}
+        '429': {description: A code was sent less than one minute ago}
+  /auth/refresh:
+    post:
+      security: []
+      summary: Rotate a refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [refreshToken]
+              properties: {refreshToken: {type: string}}
+      responses:
+        '200': {description: Rotated token pair returned}
+        '401': {description: Refresh token invalid or expired}
+  /auth/logout:
+    post:
+      summary: Revoke the supplied refresh token
+      responses: {'204': {description: Session revoked}}
+  /me:
+    get:
+      summary: Get the authenticated account
+      responses: {'200': {description: Account profile}}
+    patch:
+      summary: Change the authenticated account's username
+      responses: {'200': {description: Account profile returned with updated username}}
+  /bookmarks:
+    get:
+      summary: List bookmarks owned by the authenticated account
+      parameters:
+        - {in: query, name: folderId, schema: {type: string, format: uuid}}
+        - {in: query, name: platform, schema: {type: string}}
+        - {in: query, name: cursor, schema: {type: string}}
+        - {in: query, name: limit, schema: {type: integer, minimum: 1, maximum: 100, default: 30}}
+      responses: {'200': {description: Bookmark page and next cursor}}
+    post:
+      summary: Save a bookmark
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [originalUrl]
+              properties:
+                originalUrl: {type: string, format: uri}
+                customTitle: {type: [string, 'null'], maxLength: 300}
+                userNotes: {type: [string, 'null'], maxLength: 5000}
+                folderIds: {type: array, items: {type: string, format: uuid}}
+      responses: {'201': {description: Bookmark saved}}
+  /bookmarks/{bookmarkId}:
+    parameters:
+      - {in: path, name: bookmarkId, required: true, schema: {type: string, format: uuid}}
+    get:
+      summary: Get one owned bookmark
+      responses: {'200': {description: Bookmark returned}, '404': {description: Not found}}
+    patch:
+      summary: Update custom title or notes; empty string clears a value
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customTitle: {type: [string, 'null'], maxLength: 300}
+                userNotes: {type: [string, 'null'], maxLength: 5000}
+      responses: {'200': {description: Bookmark updated}}
+    delete:
+      summary: Delete one owned bookmark
+      responses: {'204': {description: Bookmark deleted}, '404': {description: Not found}}
+  /bookmarks/{bookmarkId}/folders:
+    put:
+      summary: Replace folder memberships for a bookmark
+      parameters:
+        - {in: path, name: bookmarkId, required: true, schema: {type: string, format: uuid}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [folderIds]
+              properties: {folderIds: {type: array, items: {type: string, format: uuid}}}
+      responses: {'200': {description: Memberships replaced}}
+  /folders:
+    get:
+      summary: List the authenticated account's folders
+      responses: {'200': {description: Folder list with bookmark counts}}
+    post:
+      summary: Create a folder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties: {name: {type: string, minLength: 1, maxLength: 120}}
+      responses: {'201': {description: Folder created}, '409': {description: Folder name already exists}}
+  /folders/{folderId}:
+    parameters:
+      - {in: path, name: folderId, required: true, schema: {type: string, format: uuid}}
+    patch:
+      summary: Rename an owned folder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties: {name: {type: string, minLength: 1, maxLength: 120}}
+      responses: {'200': {description: Folder renamed}, '404': {description: Not found}}
+    delete:
+      summary: Delete a folder and its memberships; bookmarks remain
+      responses: {'204': {description: Folder deleted}, '404': {description: Not found}}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Credentials:
+      type: object
+      required: [email, password]
+      properties:
+        email: {type: string, format: email, maxLength: 320}
+        password: {type: string, minLength: 10, maxLength: 72}
+    LoginCredentials:
+      type: object
+      required: [identifier, password]
+      properties:
+        identifier: {type: string, description: Email address or username}
+        password: {type: string}

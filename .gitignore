@@ -1,0 +1,27 @@
+# Local environment secrets
+.env
+.env.*
+!.env.example
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key
+*service-account*.json
+google-services.json
+GoogleService-Info.plist
+
+# Java / Gradle output and local caches
+**/build/
+**/.gradle/
+backend/.gradle-local/
+*.class
+
+# React Native / Android / iOS generated files
+mobile/node_modules/
+mobile/android/local.properties
+mobile/android/.cxx/
+mobile/ios/Pods/
+mobile/ios/build/
+mobile/ios/DerivedData/

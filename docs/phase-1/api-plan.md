@@ -2,7 +2,7 @@
 
 **Base path:** `/api/v1`  
 **Format:** JSON over HTTPS  
-**Status:** Contract outline; no endpoints are implemented yet.
+**Status:** Phase 2.2 endpoints are implemented in `backend/`; the current OpenAPI contract is in `docs/phase-2.2/api-contract.yaml`.
  
 ## API conventions
 
@@ -95,10 +95,10 @@ Bookmark response (metadata fields may be null):
 - Avoid returning password hashes, internal token data, or unfiltered upstream metadata.
 - Rate-limit account and authentication routes; avoid revealing whether an email is registered in recovery responses.
 
-## Open decisions before Phase 2.2
+## Decisions applied in Phase 2.2
 
-1. Self-managed email/password with Spring Security, or a hosted identity provider. Recommendation for this portfolio project: implement the application integration and authorization in Spring Security, use a maintained password-hashing implementation, and use a well-understood token/session pattern rather than custom cryptography.
-2. Exact access/refresh lifetime, rotation, revocation, and secure mobile storage.
-3. Account recovery and email verification approach.
-4. Whether email is the account identifier or whether additional login providers are needed.
-5. Folder rename case-sensitivity and duplicate-name behavior.
+1. Self-managed email/password with Spring Security and BCrypt hashing; access/refresh tokens are standards-based and do not use custom cryptography.
+2. HS256 access tokens expire after 15 minutes. Opaque refresh tokens expire after 30 days, rotate on use, and are stored as SHA-256 hashes. The app stores session credentials in the platform secure credential store.
+3. Email is the account identifier. Password recovery and email verification are not included in this implementation slice.
+4. Folder names are trimmed and case-insensitively unique within one account.
+5. See `docs/phase-2.2/implementation.md` for security and environment limitations.

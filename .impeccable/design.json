@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-19T00:00:00Z",
+  "title": "Design System: UniMark",
+  "colorMeta": {
+    "primary": {"name": "Library Green", "role": "Primary actions and selected states", "tonalRamp": ["#14251f", "#203a31", "#2a4d40", "#315d4e", "#52796b", "#78988c", "#a8bdb5", "#d4ded9"]},
+    "primary-soft": {"name": "Soft Green Gray", "role": "Secondary controls and status surfaces", "tonalRamp": ["#202622", "#344039", "#46534b", "#59645d", "#778179", "#a1aaa3", "#c8cfca", "#edf1ee"]},
+    "neutral-bg": {"name": "Canvas", "role": "Main app background", "tonalRamp": ["#202622", "#39413b", "#59615b", "#7b837d", "#9ea59f", "#bcc2bd", "#d9ddda", "#f7f8f6"]},
+    "neutral-card": {"name": "Card White", "role": "Cards and fields", "tonalRamp": ["#202622", "#3e4540", "#636a65", "#858b87", "#a9aeab", "#c9cdca", "#e4e6e5", "#ffffff"]},
+    "neutral-text": {"name": "Main Text", "role": "Titles and key content", "tonalRamp": ["#101311", "#202622", "#3c433e", "#59615b", "#777e79", "#9da39f", "#c3c8c4", "#e8eae8"]},
+    "neutral-muted": {"name": "Muted Text", "role": "Metadata and helper copy", "tonalRamp": ["#1c211e", "#303833", "#46504a", "#59645d", "#68736c", "#8d9790", "#bac1bc", "#e3e7e4"]},
+    "neutral-border": {"name": "Divider", "role": "Borders and separators", "tonalRamp": ["#202622", "#39413b", "#59615b", "#777f79", "#969d98", "#b5bbb7", "#d0d5d1", "#e2e7e2"]},
+    "danger": {"name": "Destructive", "role": "Delete actions", "tonalRamp": ["#311312", "#511f1d", "#752d2a", "#923936", "#a13f3a", "#bd6c67", "#d8a09c", "#efd2d0"]}
+  },
+  "shadows": [],
+  "motion": [],
+  "breakpoints": [],
+  "components": [
+    {"name": "Primary Action", "kind": "button", "refersTo": "button-primary", "description": "Clear primary save and account action.", "html": "<button class=\"ds-primary\">Save to account</button>", "css": ".ds-primary{min-height:48px;padding:0 14px;background:#315d4e;color:#fff;border:0;border-radius:8px;font:600 14px sans-serif}.ds-primary:hover{background:#284d40}.ds-primary:focus-visible{outline:3px solid #78988c;outline-offset:2px}.ds-primary:active{transform:translateY(1px)}"},
+    {"name": "Text Field", "kind": "input", "refersTo": "input", "description": "Plain account or library search field.", "html": "<input class=\"ds-input\" placeholder=\"Search titles, URLs, or sources\" />", "css": ".ds-input{box-sizing:border-box;width:100%;min-height:48px;padding:0 12px;background:#fff;color:#202622;border:1px solid #d9e0da;border-radius:8px;font:400 14px sans-serif}.ds-input:focus-visible{outline:3px solid #78988c;outline-offset:2px}"},
+    {"name": "Bookmark Card", "kind": "card", "refersTo": "bookmark-card", "description": "Quiet summary of a saved link and its actions.", "html": "<article class=\"ds-bookmark\"><small>YOUTUBE <span>Oct 18</span></small><h3>A saved link</h3><p>youtube.com/example</p></article>", "css": ".ds-bookmark{padding:14px;background:#fff;color:#202622;border:1px solid #e2e7e2;border-radius:12px}.ds-bookmark small{color:#68736c;font:600 11px sans-serif}.ds-bookmark small span{float:right;font-weight:400}.ds-bookmark h3{margin:10px 0 4px;font:600 15px/1.4 sans-serif}.ds-bookmark p{margin:0;color:#68736c;font:400 11px sans-serif}"}
+  ],
+  "narrative": {
+    "northStar": "A clear, quiet link library",
+    "overview": "UniMark uses a quiet, familiar mobile interface that keeps attention on saved links and the actions around them. The visual system uses one restrained green accent, neutral surfaces, and the platform's default sans-serif type. Labels and controls use plain language.",
+    "keyCharacteristics": ["One accent color for primary actions and selected folders.", "Neutral background, white cards, and subtle borders.", "System sans-serif type at readable sizes and regular weights.", "Compact, consistent controls with uncluttered spacing."],
+    "rules": [{"name": "The One Accent Rule", "body": "Use green for the main action and selected state; keep routine content neutral.", "section": "colors"}],
+    "dos": ["Do use system fonts and plain, descriptive labels.", "Do keep the original URL available when a custom title is set.", "Do keep touch targets at or above native accessibility guidance."],
+    "donts": ["Don't use decorative type or multiple competing accent colors.", "Don't repeat section labels when a clear heading already communicates the content.", "Don't add shadows, borders, or badges without a functional purpose."]
+  }
+}
